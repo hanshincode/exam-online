@@ -3,6 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <script>
+      // Polyfills cho các dòng máy cũ (như Safari 10 / iOS 10 trên iPad 4)
+      if (typeof globalThis === 'undefined') {
+        window.globalThis = window;
+      }
+      if (!Object.values) {
+        Object.values = function(obj) {
+          return Object.keys(obj).map(function(key) { return obj[key]; });
+        };
+      }
+      if (!Object.entries) {
+        Object.entries = function(obj) {
+          return Object.keys(obj).map(function(key) { return [key, obj[key]]; });
+        };
+      }
+      if (!Object.fromEntries) {
+        Object.fromEntries = function(entries) {
+          var obj = {};
+          for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            obj[entry[0]] = entry[1];
+          }
+          return obj;
+        };
+      }
+      if (!String.prototype.includes) {
+        String.prototype.includes = function(search, start) {
+          if (typeof start !== 'number') { start = 0; }
+          if (start + search.length > this.length) { return false; }
+          return this.indexOf(search, start) !== -1;
+        };
+      }
+      if (!Array.prototype.includes) {
+        Array.prototype.includes = function(searchElement, fromIndex) {
+          var o = Object(this);
+          var len = o.length >>> 0;
+          if (len === 0) { return false; }
+          var n = fromIndex | 0;
+          var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+          while (k < len) {
+            if (o[k] === searchElement) { return true; }
+            k++;
+          }
+          return false;
+        };
+      }
+    </script>
     <title>Hệ Thống Thi Trực Tuyến - EXAM ONLINE</title>
     <meta name="description" content="Hệ thống thi trực tuyến trắc nghiệm & tự luận, tích hợp AI chấm bài tự động bằng Google Gemini" />
     <meta name="theme-color" content="#3b82f6" />
