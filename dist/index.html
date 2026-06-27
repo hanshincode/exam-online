@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Hệ Thống Thi Trực Tuyến - EXAM ONLINE</title>
+    <meta name="description" content="Hệ thống thi trực tuyến trắc nghiệm & tự luận, tích hợp AI chấm bài tự động bằng Google Gemini" />
+    <meta name="theme-color" content="#3b82f6" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/logo-exam.ico" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Apple Touch Icon (iPhone / iPad Home Screen) -->
+    <link rel="apple-touch-icon" href="/logo-exam.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="EXAM ONLINE" />
+
+    <!-- Android / Chrome -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <script type="module" crossorigin src="/assets/index-DWKeVq6Y.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CLOzvi-f.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Đăng ký Service Worker + Cơ chế tự động cập nhật giao diện
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then((registration) => {
+            console.log('[SW] Service Worker đã đăng ký thành công.');
+
+            // Kiểm tra cập nhật mỗi 60 giây
+            setInterval(() => {
+              registration.update();
+            }, 60 * 1000);
+
+            // Khi phát hiện có SW mới đang chờ kích hoạt
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'activated') {
+                    // SW mới đã kích hoạt → tải lại trang để nhận giao diện mới
+                    if (navigator.serviceWorker.controller) {
+                      console.log('[SW] Phiên bản mới đã sẵn sàng. Tải lại trang...');
+                      window.location.reload();
+                    }
+                  }
+                });
+              }
+            });
+          }).catch((err) => {
+            console.error('[SW] Lỗi đăng ký Service Worker:', err);
+          });
+
+          // Khi SW mới chiếm quyền điều khiển, tải lại trang
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+              refreshing = true;
+              window.location.reload();
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

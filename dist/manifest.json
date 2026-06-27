@@ -1,0 +1,23 @@
+{
+  "name": "Hệ Thống Thi Trực Tuyến - EXAM ONLINE",
+  "short_name": "EXAM ONLINE",
+  "description": "Hệ thống thi trực tuyến trắc nghiệm & tự luận tích hợp AI chấm bài tự động",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo-exam.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-exam.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
